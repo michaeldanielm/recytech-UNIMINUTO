@@ -10,35 +10,33 @@
       <div class="modal-body">
           <form method="post" id="asignarToner">
             @csrf
-              <div class="form-group">
+              <div class="form-group s2C">
 
                 <label for="">Impresora</label>
-                @isset($impresora[0]->id_impresora)
-                  <input list="modelosImpresoras" class="form-control" name="id_impresora" autocomplete="off" required id="id_impresoraT" value="{{$impresora[0]->modelo}}" readonly>
-                @else
-                  <input list="modelosImpresoras" class="form-control" name="id_impresora" autocomplete="off" required id="id_impresoraT">
-                @endisset
-
-                <datalist id="modelosImpresorasT">
+                <select name="id_impresora" id="" class="s2" style="width:75%">
                   @forelse ($listadoImpresoras as $impresora)
-                    <option data-value="{{$impresora->id_impresora}}" value="{{$impresora->modelo}}">
+                    <option value="{{$impresora->id_impresora}}">{{$impresora->modelo}}</option>
                   @empty
                     <option value="0" disabled>No hay impresoras</option>
                   @endforelse
-                </datalist>
+                </select>
 
               </div>
 
 
-              <div class="form-group">
+              <div class="form-group s2C">
                 <label for="">Cartucho</label>
-                <input name="id_cartucho" list="cartuchos" class="form-control" autocomplete="off" required id="id_cartuchoT">
-                <datalist id="cartuchos">
-                  @foreach ($listadoToner as $toner)
-                    <option data-value="{{$toner->id_cartucho}}" value="{{$toner->modelo}}">
-                  @endforeach
-                </datalist>
+                <select name="id_cartucho" id="" class="s2" style="width:75%">
+                  @forelse ($cartuchos as $toner)
+                      <option value="{{$toner->id_cartucho}}">{{$toner->modelo}}</option>
+                  @empty
+                      <option disabled>No hay cartuchos</option>
+                  @endforelse
+                </select>
+
               </div>
+
+
               <button class="btn btn-success">Asignar <i class="fa fa-arrow-right"></i></button>
             </form>
           </div>
@@ -55,22 +53,19 @@
     event.preventDefault();
 
     //Mostrar el valor del datalist en el input
-    var impresoraMostrada = document.getElementById("id_impresoraT").value;
-    @isset($impresora[0]->id_impresora)
-      var impresoraId = {{$impresora[0]->id_impresora}}
-    @else
-    var impresoraId = document.querySelector("#modelosImpresoras option[value='"+impresoraMostrada+"']").dataset.value;
-    @endisset
-    var cartuchoMostrado = document.getElementById("id_cartuchoT").value;
-    var cartuchoId = document.querySelector("#cartuchos option[value='"+cartuchoMostrado+"']").dataset.value;
+    // var impresoraMostrada = document.getElementById("id_impresoraT").value;
+    // @isset($impresora[0]->id_impresora)
+    //   var impresoraId = {{$impresora[0]->id_impresora}}
+    // @else
+    // var impresoraId = document.querySelector("#modelosImpresoras option[value='"+impresoraMostrada+"']").dataset.value;
+    // @endisset
+    // var cartuchoMostrado = document.getElementById("id_cartuchoT").value;
+    // var cartuchoId = document.querySelector("#cartuchos option[value='"+cartuchoMostrado+"']").dataset.value;
 
     $.ajax({
       type:"POST",
       url: "{{route('impresoraCartucho.store')}}",
-      data:{
-        "id_impresora":impresoraId,
-        "id_cartucho":cartuchoId
-      },
+      data:$("#asignarToner").serialize(),
       success:function(resp){
         $.each(resp, function(llave,valor){
           if(valor==1){
@@ -99,4 +94,16 @@
       }
     })
   })
+</script>
+<script>
+$(document).ready(function() {
+  $('.s2').select2({
+    dropdownParent: $("#modalAsignarToner"),
+    language: {
+            noResults: function () {
+                 return "Sin resultados";
+            }
+        }
+  });
+});
 </script>

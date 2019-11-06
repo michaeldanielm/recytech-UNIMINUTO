@@ -12,6 +12,8 @@
             <form method="post" id="adminToner">
               @csrf
               <input type="hidden" name="id_cartucho" id="adminIdCartucho" value="">
+              <input type="hidden" id="adminRelacion" name="relacion">
+              <input type="hidden" name="id_inventario" value="" id="adminUbicacion">
               <div class="form-group">
                 <label for="">Cantidad</label>
                 <input type="number" id="adminCantidadToner" min="0" class="ml-3 form-control" name="cantidad" required>
@@ -29,7 +31,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
   $("#adminToner").submit(function(){

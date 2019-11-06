@@ -6,36 +6,40 @@
   @include('admin.navegacion')
   <div class="container">
     <h1 class="display-5 mt-3">Listado de equipos</h1>
+    <a href="{{route('reporteEquipos')}}" class="btn btn-dark">Reporte de equipos</a>
     @include('admin.equipos.acciones')
-    <table class="table table-hover table-striped" id="equipos">
-      <thead>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Lugar</th>
-        <th>Tipo</th>
-        <th></th>
-      </thead>
-      <tbody>
-        @forelse ($equipos as $equipo)
-          <tr>
-            <td>{{$equipo->id_equipo}}</td>
-            @isset($equipo->equipoPersona->persona)
-              <td>{{$equipo->equipoPersona->persona->nombre}}</td>
-              <td>{{$equipo->equipoPersona->persona->ubicacion->planta}} - {{$equipo->equipoPersona->persona->ubicacion->departamento}}</td>
-            @else
-              <td><span class="badge badge-secondary">Sin asignar</span></td>
-              <td><span class="badge badge-secondary">Sin asignar</span></td>
-            @endisset
-            <td>{{$equipo->tipo}}</td>
-            <td><a href="{{route('equipos.show',$equipo->id_equipo)}}" class="btn btn-info">Administrar</a></td>
-          </tr>
-        @empty
-          <tr>
-            <td><div class="alert alert-info">No hay equipos</div></td>
-          </tr>
-        @endforelse
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped" id="equipos">
+        <thead>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Lugar</th>
+          <th>Tipo</th>
+          <th></th>
+        </thead>
+        <tbody>
+          @forelse ($equipos as $equipo)
+            <tr>
+              <td>{{$equipo->id_equipo}}</td>
+              @isset($equipo->equipoPersona->persona)
+                <td>{{$equipo->equipoPersona->persona->nombre}}</td>
+                <td>{{$equipo->equipoPersona->persona->ubicacion->planta}} - {{$equipo->equipoPersona->persona->ubicacion->departamento}}</td>
+              @else
+                <td><span class="badge badge-secondary">Sin asignar</span></td>
+                <td><span class="badge badge-secondary">Sin asignar</span></td>
+              @endisset
+              <td>{{$equipo->tipo}}</td>
+              <td><a href="{{route('equipos.show',$equipo->id_equipo)}}" class="btn btn-info">Administrar</a></td>
+            </tr>
+          @empty
+            <tr>
+              <td><div class="alert alert-info">No hay equipos</div></td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
   <script>

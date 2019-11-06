@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use DB;
 class EquipoPersonaController extends Controller
 {
+
+  public function __construct(){
+    $this->middleware('auth');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -99,6 +103,7 @@ class EquipoPersonaController extends Controller
         ]);
       }catch(\Exception $e){
         return response()->json([
+          "ok"=>0,
           "error"=>$e->getMessage()
         ]);
       }

@@ -7,10 +7,15 @@ use App\ImpresoraCartucho;
 use App\Impresora;
 use App\Cartucho;
 use App\Ubicacion;
+use App\InventarioCartuchos;
 use Illuminate\Http\Request;
 use DB;
 class ImpresoraUbicacionController extends Controller
 {
+
+  public function __construct(){
+    $this->middleware('auth');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +27,15 @@ class ImpresoraUbicacionController extends Controller
                                         ->with('ubicacion')
                                         ->with('impresoraCartucho')
                                               ->with('impresoraCartucho.cartucho')
+                                              // ->with('impresoraCartucho.inventario')
                                         ->get();
+
         $listadoImpresoras=Impresora::all();
-        $listadoToner=Cartucho::all();
+        $listadoToner=InventarioCartuchos::with('cartucho')->with('ubicacion')->get();
+        $cartuchos=Cartucho::all();
         $ubicaciones=Ubicacion::all();
-        // $impresorasCartuchos=ImpresoraCartucho::all();
-        return view('admin.impresoras.lista',compact('impresoras','listadoImpresoras','listadoToner','ubicaciones'));
+
+        return view('admin.impresoras.lista',compact('impresoras','listadoImpresoras','listadoToner','ubicaciones','cartuchos'));
     }
 
     /**

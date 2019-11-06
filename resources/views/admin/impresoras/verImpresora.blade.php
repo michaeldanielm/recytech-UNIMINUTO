@@ -16,52 +16,57 @@
     <div class="tab-content mt-3">
       <div class="tab-pane active" id="ubicacionesImp" role="tabpanel">
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalAsignarImpresora">Asignar a nueva ubicación <i class="fa fa-plus"></i></button>
-        <table class="table table-striped table-hover">
-          <thead>
-            <th>Planta</th>
-            <th>Departamento</th>
-            <th></th>
-          </thead>
-          <tbody>
-            @forelse ($impresora[0]->impresoraUbicacion as $lugar)
-              <tr>
-                <td>{{$lugar->ubicacion->planta}}</td>
-                <td>{{$lugar->ubicacion->departamento}}</td>
-                <td><button class="btn btn-danger" onclick="eliminarRelacionUbicacion({{$lugar->id}})">Eliminar <i class="fa fa-trash"></i></button></td>
-              </tr>
-            @empty
-              <tr><td colspan="3"><div class="alert alert-info">Sin asignar</div></td></tr>
-            @endforelse
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <th>Planta</th>
+              <th>Departamento</th>
+              <th></th>
+            </thead>
+            <tbody>
+              @forelse ($impresora[0]->impresoraUbicacion as $lugar)
+                <tr>
+                  <td>{{$lugar->ubicacion->planta}}</td>
+                  <td>{{$lugar->ubicacion->departamento}}</td>
+                  <td><button class="btn btn-danger" onclick="eliminarRelacionUbicacion({{$lugar->id}})">Eliminar <i class="fa fa-trash"></i></button></td>
+                </tr>
+              @empty
+                <tr><td colspan="3"><div class="alert alert-info">Sin asignar</div></td></tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
       <div class="tab-pane" id="cartuchosImp" role="tabpanel">
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#modalAsignarToner">Asignar nuevo cartucho <i class="fa fa-plus"></i></button>
-        <table class="table table-striped table-hover">
-          <thead>
-            <th>ID cartucho</th>
-            <th>Modelo</th>
-            <th>Cantidad</th>
-            <th>Sugeridos</th>
-            <th></th>
-            <th></th>
-          </thead>
-          <tbody>
-            @forelse ($impresora[0]->impresoraCartucho as $cartucho)
-              <tr>
-                <td>{{$cartucho->cartucho->id_cartucho}}</td>
-                <td>{{$cartucho->cartucho->modelo}}</td>
-                <td>{{$cartucho->cartucho->cantidad}}</td>
-                <td>{{$cartucho->cartucho->cantidadSugerida}}</td>
-                <td><button class="btn btn-warning btn-sm activarModalToner"  data-toggle="modal" data-id="{{$cartucho->cartucho->id_cartucho}}"  data-modelo="{{$cartucho->cartucho->modelo}}" data-cantidad="{{$cartucho->cartucho->cantidad}}" data-sugerido="{{$cartucho->cartucho->cantidadSugerida}}" ><i class="fa fa-plus"></i>/<i class="fa fa-minus"></i></button></td>
-                <td><button class="btn btn-danger" onclick="eliminarRelacionToner({{$cartucho->id}})">Eliminar <i class="fa fa-trash"></i></button></td>
-              </tr>
-            @empty
-              <tr><td colspan="3"><div class="alert alert-info">Sin asignar</div></td></tr>
-            @endforelse
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <th>ID cartucho</th>
+              <th>Modelo</th>
+              <th>Cantidad</th>
+              <th>Sugeridos</th>
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              @forelse ($impresora[0]->impresoraCartucho as $cartucho)
+                <tr>
+                  <td>{{$cartucho->cartucho->id_cartucho}}</td>
+                  <td>{{$cartucho->cartucho->modelo}}</td>
+                  <td>{{$cartucho->cartucho->cantidad}}</td>
+                  <td>{{$cartucho->cartucho->cantidadSugerida}}</td>
+                  <td><button class="btn btn-warning btn-sm activarModalToner"  data-toggle="modal" data-id="{{$cartucho->cartucho->id_cartucho}}"  data-modelo="{{$cartucho->cartucho->modelo}}" data-cantidad="{{$cartucho->cartucho->cantidad}}" data-sugerido="{{$cartucho->cartucho->cantidadSugerida}}" ><i class="fa fa-plus"></i>/<i class="fa fa-minus"></i></button></td>
+                  <td><button class="btn btn-danger" onclick="eliminarRelacionToner({{$cartucho->id}})">Eliminar <i class="fa fa-trash"></i></button></td>
+                </tr>
+              @empty
+                <tr><td colspan="3"><div class="alert alert-info">Sin asignar</div></td></tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

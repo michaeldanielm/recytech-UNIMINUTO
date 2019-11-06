@@ -16,7 +16,7 @@
                 <input type="text" class="form-control" required list="listaPersonas" id="id_persona">
                 <datalist id="listaPersonas">
                   @foreach ($personas as $persona)
-                    <option data-value="{{$persona->id_persona}}" value="{{$persona->nombre}} ({{$persona->codigo_empleado}})"></option>
+                    <option data-value="{{$persona->id_persona}}" value="{{$persona->nombre}} ({{$persona->ubicacion->planta}} {{$persona->ubicacion->departamento}})"></option>
                   @endforeach
                 </datalist>
               </div>

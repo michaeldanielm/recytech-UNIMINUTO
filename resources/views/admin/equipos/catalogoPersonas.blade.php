@@ -13,7 +13,7 @@
               @csrf
 
               <div class="form-group">
-                <label for="">Código de Usuario</label>
+                <label for="">Código de empleado</label>
                 <input type="number" min="0" name="codigo_empleado" class="form-control">
               </div>
 
@@ -27,6 +27,7 @@
               <div class="form-group">
                 <label for="">Ubicación*</label>
                 <input type="text" class="form-control" required list="listaUbicaciones" id="id_ubicacion">
+                <a href="#!" data-dismiss="modal" data-toggle="modal" data-target="#modalAgregarUbicacion">Agregar ubicación</a>
                 <datalist id="listaUbicaciones">
                   @foreach ($ubicaciones as $ubicacion)
                     <option data-value="{{$ubicacion->id_ubicacion}}" value="{{$ubicacion->planta}} {{$ubicacion->departamento}}"></option>
@@ -35,7 +36,12 @@
               </div>
 
               <div class="form-group">
-                <label for="">Persona que entrega</label>
+                <label for="">Puesto</label>
+                <input type="text" name="puesto" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="">Jefe</label>
                 <input type="text" name="jefe" class="form-control">
               </div>
 
@@ -44,39 +50,44 @@
                 <input type="text" name="correo" class="form-control">
               </div>
 
-              <button class="btn btn-success btn-block">Guardar <i class="fa fa-save"></i></button>
+              <button class="btn btn-success btn-block mb-3">Guardar <i class="fa fa-save"></i></button>
             </form>
           </div>
+          <div class="table-responsive">
+            <table id="catalogoPersonas" class="table table-hover table-striped mt-2">
+              <thead>
+                <th>Código de empleado</th>
+                <th>Nombre</th>
+                <th>Ubicación</th>
+                <th>Puesto</th>
+                <th>Jefe</th>
+                <th>Correo</th>
+                <th></th>
+                {{-- <th></th> --}}
+              </thead>
+              <tbody>
+                @forelse ($personas as $persona)
+                  <tr>
+                    <td>{{$persona->codigo_empleado}}</td>
+                    <td>{{$persona->nombre}}</td>
+                    <td>{{$persona->ubicacion->planta}} {{$persona->ubicacion->departamento}}</td>
+                    <td>{{$persona->puesto}}</td>
+                    <td>{{$persona->jefe}}</td>
+                    <td>{{$persona->correo}}</td>
+                    <td><a class="btn btn-warning" href="{{route('persona.edit',$persona->id_persona)}}"><i class="fa fa-edit"></i></a></td>
+                    {{-- <td><button class="btn btn-warning"><i class="fa fa-edit"></i></button></td> --}}
+                  </tr>
+                @empty
 
-          <table id="catalogoPersonas" class="table table-hover table-striped mt-2">
-            <thead>
-              <th>Código de empleado</th>
-              <th>Nombre</th>
-              <th>Ubicación</th>
-              <th>Jefe</th>
-              <th>Correo</th>
-              {{-- <th></th> --}}
-            </thead>
-            <tbody>
-              @forelse ($personas as $persona)
-                <tr>
-                  <td>{{$persona->codigo_empleado}}</td>
-                  <td>{{$persona->nombre}}</td>
-                  <td>{{$persona->ubicacion->planta}} {{$persona->ubicacion->departamento}}</td>
-                  <td>{{$persona->jefe}}</td>
-                  <td>{{$persona->correo}}</td>
-                  {{-- <td><button class="btn btn-warning"><i class="fa fa-edit"></i></button></td> --}}
-                </tr>
-              @empty
+                @endforelse
+              </tbody>
+            </table>
+          </div>
 
-              @endforelse
-            </tbody>
-          </table>
       </div>
     </div>
   </div>
 </div>
-
 
 <script>
   $("#agregarPersona").submit(function(){

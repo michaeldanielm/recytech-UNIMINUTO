@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Cartucho;
 use Illuminate\Http\Request;
 use DB;
+use App\RegistroConsumo;
+use App\InventarioCartuchos;
 class CartuchoController extends Controller
 {
+  public function __construct(){
+    $this->middleware('auth');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -37,15 +42,27 @@ class CartuchoController extends Controller
     {
       try{
         DB::transaction(function() use($request){
-          $cartucho=new Cartucho();
-          $cartucho->modelo=$request->input('modelo');
-          $cartucho->cantidad=$request->input('cantidad');
-          $cartucho->cantidadSugerida=$request->input('cantidadSugerida');
-          $cartucho->save();
+          $cartucho=Cartucho::firstOrNew(['modelo' => $request->input('modelo')]);
+          $inventario=new InventarioCartuchos();
+
+          if(!$cartucho->exists){
+            $cartucho->modelo=$request->input('modelo');
+            $cartucho->save();
+          }
+
+
+          /* Se inserta el id del último cartucho creado o seleccionado */
+          $inventario->id_cartucho=$cartucho->id_cartucho;
+          $inventario->id_ubicacion= $request->input('id_ubicacion');
+
+          $request->input('cantidad')>0 ? $inventario->cantidad=$request->input('cantidad') : $inventario->cantidad=0;
+          $request->input('cantidadSugerida')>0 ? $inventario->cantidadSugerida=$request->input('cantidadSugerida') : $inventario->cantidadSugerida=0;
+
+          $inventario->save();
         });
         return response()->json(['ok'=>1]);
       }catch(\Exception $e){
-        return response()->json(['error'=>$e->getMessage()]);
+        return response()->json(['ok'=>0,'error'=>$e->getMessage()]);
       }
     }
 
@@ -55,9 +72,22 @@ class CartuchoController extends Controller
      * @param  \App\Cartucho  $cartucho
      * @return \Illuminate\Http\Response
      */
-    public function show(Cartucho $cartucho)
+    public function show(Request $request)
     {
-        //
+
+    }
+
+    public function infoCartucho(Request $request){
+      $inventario=InventarioCartuchos::where('id_cartucho',$request->input('cartucho'))->get();
+      return response()->json($inventario);
+    }
+
+    public function infoRelacion(Request $request){
+      $inventario=InventarioCartuchos::where([
+                                                ['id_cartucho',$request->input('id_cartucho')],
+                                                ['id_ubicacion',$request->input('id_ubicacion')],
+                                              ])->first();
+      return response()->json($inventario);
     }
 
     /**
@@ -80,16 +110,29 @@ class CartuchoController extends Controller
      */
     public function update(Request $request)
     {
+      // $cartucho=Cartucho::find($request->input('id_cartucho'));
+      $inventario=InventarioCartuchos::findOrFail($request->input('id_inventario'));
+
+      $relacion=new RegistroConsumo();
+
       try{
-        DB::transaction(function() use($request){
-          $cartucho=Cartucho::find($request->input('id_cartucho'));
-          $cartucho->cantidad=$request->input('cantidad');
-          $cartucho->cantidadSugerida=$request->input('cantidadSugerida');
-          $cartucho->save();
+        $cantidadActual=$inventario->cantidad;
+        DB::transaction(function() use($request,$inventario){
+          $inventario->cantidad = $request->input('cantidad');
+          $inventario->cantidadSugerida = $request->input('cantidadSugerida');
+          $inventario->save();
         });
+        if(!is_null($request->input('id_relacion')) && $request->input('id_relacion')>=1){
+          DB::transaction(function() use($request, $relacion, $inventario, $cantidadActual){
+            $relacion->id_impresora_ubicacion = $request->input('id_relacion');
+            $relacion->id_inventario_cartucho = $inventario->id;
+            $relacion->cantidad = $cantidadActual - $request->input('cantidad');
+            $relacion->save();
+          });
+        }
         return response()->json(["ok"=>1]);
       }catch(\Exception $e){
-        return response()->json(["error"=>$e->getMessage()]);
+        return response()->json(["ok"=>0, "error"=>$e->getMessage()]);
       }
 
     }

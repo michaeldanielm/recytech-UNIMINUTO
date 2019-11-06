@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use DB;
 class ImpresoraController extends Controller
 {
+
+  public function __construct(){
+    $this->middleware('auth');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -67,9 +71,9 @@ class ImpresoraController extends Controller
                               ->where('id_impresora',$id)
                               ->get();
         $listadoImpresoras=Impresora::all();
-        $listadoToner=Cartucho::all();
+        $cartuchos=Cartucho::all();
         $ubicaciones=Ubicacion::all();
-        return view('admin.impresoras.verImpresora',compact('impresora','listadoImpresoras','listadoToner','ubicaciones'));
+        return view('admin.impresoras.verImpresora',compact('impresora','listadoImpresoras','cartuchos','ubicaciones'));
     }
 
     /**

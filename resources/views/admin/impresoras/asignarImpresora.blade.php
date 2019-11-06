@@ -13,7 +13,12 @@
               <div class="form-group">
 
                 <label for="">Modelo</label>
-
+                <select name="id_impresora" id="" class="s2iu" style="width:75%">
+                  @foreach ($listadoImpresoras as $li)
+                   <option value="{{$li->id_impresora}}">{{$li->modelo}}</option>
+                  @endforeach
+                </select>
+{{--
                 @isset($impresora[0]->id_impresora)
                   <input list="modelosImpresoras" class="form-control" name="id_impresora" autocomplete="off" required id="id_impresora" value="{{$impresora[0]->modelo}}" readonly>
                 @else
@@ -26,20 +31,25 @@
                   @empty
                     <option value="0" disabled>No hay impresoras</option>
                   @endforelse
-                </datalist>
+                </datalist> --}}
 
               </div>
 
 
               <div class="form-group">
                 <label for="">Ubicación</label>
-                <input name="id_ubicacion" list="ubicaciones" class="form-control" autocomplete="off" required id="id_ubicacion">
+                <select name="id_ubicacion" id="" class="s2iu" style="width:75%">
+                  @foreach ($ubicaciones as $ub)
+                <option value="{{$ub->id_ubicacion}}">{{$ub->planta}} {{$ub->departamento}}</option>
+                  @endforeach
+                </select>
+                {{-- <input name="id_ubicacion" list="ubicaciones" class="form-control" autocomplete="off" required id="id_ubicacion">
                 <a href="#!" data-dismiss="modal" data-toggle="modal" data-target="#modalAgregarUbicacion">Agregar ubicación</a>
                 <datalist id="ubicaciones">
                   @foreach ($ubicaciones as $ubicacion)
                     <option data-value="{{$ubicacion->id_ubicacion}}" value="{{$ubicacion->planta}} {{$ubicacion->departamento}}"></option>
                   @endforeach
-                </datalist>
+                </datalist> --}}
               </div>
               <button class="btn btn-success">Asignar <i class="fa fa-arrow-right"></i></button>
             </form>
@@ -58,23 +68,20 @@
     event.preventDefault();
 
     //Mostrar el valor del datalist en el input
-    var impresoraMostrada = document.getElementById("id_impresora").value;
-    @isset($impresora[0]->id_impresora)
-      var impresoraId = {{$impresora[0]->id_impresora}}
-    @else
-      var impresoraId = document.querySelector("#modelosImpresoras option[value='"+impresoraMostrada+"']").dataset.value;
-    @endisset
+    // var impresoraMostrada = document.getElementById("id_impresora").value;
+    // @isset($impresora[0]->id_impresora)
+    //   var impresoraId = {{$impresora[0]->id_impresora}}
+    // @else
+    //   var impresoraId = document.querySelector("#modelosImpresoras option[value='"+impresoraMostrada+"']").dataset.value;
+    // @endisset
 
-    var ubicacionMostrada = document.getElementById("id_ubicacion").value;
-    var ubicacionId = document.querySelector("#ubicaciones option[value='"+ubicacionMostrada+"']").dataset.value;
+    // var ubicacionMostrada = document.getElementById("id_ubicacion").value;
+    // var ubicacionId = document.querySelector("#ubicaciones option[value='"+ubicacionMostrada+"']").dataset.value;
 
     $.ajax({
       type:"POST",
       url: "{{route('impresoras.store')}}",
-      data:{
-        "id_impresora":impresoraId,
-        "id_ubicacion":ubicacionId
-      },
+      data:$("#asignarImpresora").serialize(),
       success:function(resp){
         $.each(resp, function(llave,valor){
           if(valor==1){
@@ -104,3 +111,15 @@
     })
   })
 </script>
+<script>
+    $(document).ready(function() {
+      $('.s2iu').select2({
+        dropdownParent: $("#modalAsignarImpresora"),
+        language: {
+                noResults: function () {
+                     return "Sin resultados";
+                }
+            }
+      });
+    });
+  </script>

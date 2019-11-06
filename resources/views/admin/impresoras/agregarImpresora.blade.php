@@ -12,37 +12,37 @@
             <form method="post" id="agregarImpresora">
               @csrf
               <div class="form-inline">
-                <label for="">Modelo</label>
-                <input type="text" class="ml-3 form-control" name="modelo">
-                <button class="btn btn-success"><i class="fa fa-plus-circle"></i></button>
+                <label for="">Modelo *</label>
+                <input type="text" class="ml-3 form-control" name="modelo" required>
+                <button class="btn btn-success ml-2">Agregar <i class="fa fa-plus-circle"></i></button>
               </div>
             </form>
           </div>
 
           <hr>
-        <table class="table table-striped" id="catalogoImpresoras">
-          <thead>
-            <th>ID</th>
-            <th>Modelo</th>
-            <th></th>
-          </thead>
-          <tbody>
-            @isset($listadoImpresoras)
-              @forelse ($listadoImpresoras as $impresora)
-                <tr>
-                  <td>{{$impresora->id_impresora}}</td>
-                  <td>{{$impresora->modelo}}</td>
-                  <td><a href="{{route('impresora.show',$impresora->id_impresora)}}" class="btn btn-info btn-md">Administrar</a></td>
-                </tr>
-              @empty
-                <tr><td colspan="3"><div class="alert alert info">No hay impresoras</div></td></tr>
-              @endforelse
-            @endisset
-          </tbody>
-        </table>
-
+          <div class="table-responsive">
+            <table class="table table-striped" id="catalogoImpresoras">
+              <thead>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th></th>
+              </thead>
+              <tbody>
+                @isset($listadoImpresoras)
+                  @forelse ($listadoImpresoras as $impresora)
+                    <tr>
+                      <td>{{$impresora->id_impresora}}</td>
+                      <td>{{$impresora->modelo}}</td>
+                      <td><a href="{{route('impresora.show',$impresora->id_impresora)}}" class="btn btn-info btn-md">Administrar</a></td>
+                    </tr>
+                  @empty
+                    <tr><td colspan="3"><div class="alert alert info">No hay impresoras</div></td></tr>
+                  @endforelse
+                @endisset
+              </tbody>
+            </table>
+          </div>
       </div>
-
     </div>
   </div>
 </div>
