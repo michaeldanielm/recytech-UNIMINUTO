@@ -1,15 +1,8 @@
-## Inventario para departamento de sistemas
-
-Administración de equipos de cómputo, impresoras y cartuchos con relaciones.
-
-- Relaciones Equipos de cómputo - Personas - Ubicaciones
-- Relaciones Impresoras - Ubicaciones
-- Relaciones Impresora - Cartuchos
 
 ### Hecho con:
-- Laravel 5.8
+- Laravel 6.0
 - MySQL
-- Bootstrap 4
+- Bootstrap 4.3.1
 - jQuery
 - jQueryUI
 - SweetAlert
