@@ -32,3 +32,7 @@ Route::get('reporteConsumoToner','ReporteTonerController@exportConsumo')->name('
 
 Route::get('infoCartucho','CartuchoController@infoCartucho')->name('infoCartucho');
 Route::get('infoRelacion','CartuchoController@infoRelacion')->name('infoRelacion');
+
+Route::resource('Movil','MovilController');
+Route::resource('MovilPersonas','MovilPersonaController');
+Route::resource('persona','PersonaController');

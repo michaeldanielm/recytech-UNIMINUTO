@@ -12,11 +12,11 @@
       <li class="nav-item">
         <a class="nav-link" href="{{url('impresoras')}}">Impresoras <i class="fa fa-print"></i></a>
       </li>
-      <!-- <li class="nav-item">
+       <li class="nav-item">
         <a class="nav-link" href="{{route('carpeta.index')}}">Carpetas en red <i class="fa fa-folder-open"></i></a>
-      </li> -->
+      </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{url('#')}}">Celular <i class="fa fa-mobile"></i></a>
+        <a class="nav-link" href="{{url('movil')}}">Celular <i class="fa fa-mobile"></i></a>
       </li>
 	  <li class="nav-item">
         <a class="nav-link" href="{{url('#')}}">Equipo Sonido <i class="fa fa-volume-down"></i></a>
